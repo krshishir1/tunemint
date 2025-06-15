@@ -32,6 +32,7 @@ import createClient from "@/lib/supabase/client";
 import { LoadingScreen } from "@/components/ui/loading";
 import { WalletWarning } from "@/components/auth/wallet-warning";
 import { useAccountStore } from "@/store/userStore";
+import { Label } from "@/components/ui/label";
 
 const supabase = createClient();
 
@@ -202,231 +203,245 @@ export default function DiscoverPage() {
 
   return (
     <div className="min-h-screen bg-white text-black">
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        {/* Header */}
-        <div className="mb-12">
-          <h1 className="text-7xl font-black mb-4">DISCOVER MUSIC</h1>
-          <p className="text-2xl font-bold">
-            EXPLORE AND LICENSE TRACKS FROM INDEPENDENT ARTISTS
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-12">
+        {/* Header Section */}
+        <div className="mb-8 md:mb-16">
+          <h1 className="text-4xl md:text-6xl font-black mb-4 md:mb-6">DISCOVER MUSIC</h1>
+          <p className="text-lg md:text-2xl font-bold max-w-4xl">
+            EXPLORE AND LICENSE HIGH-QUALITY MUSIC FROM INDEPENDENT ARTISTS
           </p>
         </div>
 
         {/* Search and Filters */}
-        <div className="mb-12">
-          <div className="flex gap-4 mb-6">
-            <Input
-              placeholder="SEARCH TRACKS..."
-              value={filters.search}
-              onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-              className="bg-white border-4 border-black text-black font-bold text-lg h-14 rounded-none flex-1"
-            />
+        <div className="mb-8 md:mb-12">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex-1">
+              <Input
+                placeholder="SEARCH TRACKS..."
+                value={filters.search}
+                onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+                className="bg-white border-4 border-black text-black font-bold text-lg h-14 rounded-none"
+              />
+            </div>
             <Button
               variant="outline"
-              className="border-4 border-black text-black hover:bg-black hover:text-white font-black text-lg px-8 py-4 rounded-none"
+              className="border-4 border-black text-black hover:bg-black hover:text-white font-black text-lg px-6 py-2 md:py-3 rounded-none"
               onClick={() => setShowFilters(!showFilters)}
             >
-              <Filter className="w-6 h-6 mr-2" />
               FILTERS
             </Button>
           </div>
 
           {/* Filter Panel */}
           {showFilters && (
-            <Card className="bg-white border-4 border-black rounded-none mb-6">
-              <CardContent className="p-6">
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  <div>
-                    <label className="text-lg font-bold mb-3 block">GENRE</label>
-                    <Select
-                      value={filters.genre}
-                      onValueChange={(value) =>
-                        setFilters({ ...filters, genre: value })
-                      }
-                    >
-                      <SelectTrigger className="bg-white border-4 border-black text-black font-bold text-lg h-14 rounded-none">
-                        <SelectValue placeholder="SELECT GENRE" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-white border-4 border-black rounded-none">
-                        <SelectItem value="all">ALL GENRES</SelectItem>
-                        <SelectItem value="electronic">ELECTRONIC</SelectItem>
-                        <SelectItem value="hip-hop">HIP HOP</SelectItem>
-                        <SelectItem value="rock">ROCK</SelectItem>
-                        <SelectItem value="pop">POP</SelectItem>
-                        <SelectItem value="jazz">JAZZ</SelectItem>
-                        <SelectItem value="classical">CLASSICAL</SelectItem>
-                        <SelectItem value="ambient">AMBIENT</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div>
-                    <label className="text-lg font-bold mb-3 block">MOOD</label>
-                    <Select
-                      value={filters.mood}
-                      onValueChange={(value) =>
-                        setFilters({ ...filters, mood: value })
-                      }
-                    >
-                      <SelectTrigger className="bg-white border-4 border-black text-black font-bold text-lg h-14 rounded-none">
-                        <SelectValue placeholder="SELECT MOOD" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-white border-4 border-black rounded-none">
-                        <SelectItem value="all">ALL MOODS</SelectItem>
-                        <SelectItem value="energetic">ENERGETIC</SelectItem>
-                        <SelectItem value="chill">CHILL</SelectItem>
-                        <SelectItem value="happy">HAPPY</SelectItem>
-                        <SelectItem value="sad">SAD</SelectItem>
-                        <SelectItem value="dark">DARK</SelectItem>
-                        <SelectItem value="uplifting">UPLIFTING</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="flex items-center justify-between p-4 border-4 border-black">
-                    <div>
-                      <h4 className="text-lg font-black mb-2">REMIX RIGHTS</h4>
-                      <p className="text-sm font-bold text-gray-600">
-                        ALLOW REMIXING
-                      </p>
-                    </div>
-                    <Switch
-                      checked={filters.allowRemixing}
-                      onCheckedChange={(checked) =>
-                        setFilters({ ...filters, allowRemixing: checked })
-                      }
-                      className="data-[state=checked]:bg-black"
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between p-4 border-4 border-black">
-                    <div>
-                      <h4 className="text-lg font-black mb-2">COMMERCIAL USE</h4>
-                      <p className="text-sm font-bold text-gray-600">
-                        ALLOW COMMERCIAL
-                      </p>
-                    </div>
-                    <Switch
-                      checked={filters.allowCommercial}
-                      onCheckedChange={(checked) =>
-                        setFilters({ ...filters, allowCommercial: checked })
-                      }
-                      className="data-[state=checked]:bg-black"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex justify-end mt-6">
-                  <Button
-                    variant="outline"
-                    className="border-4 border-black text-black hover:bg-black hover:text-white font-black text-lg px-8 py-4 rounded-none"
-                    onClick={() =>
-                      setFilters({
-                        genre: "",
-                        mood: "",
-                        allowRemixing: false,
-                        allowCommercial: false,
-                        search: "",
-                      })
+            <div className="mt-4 p-6 border-4 border-black bg-white">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <Label className="text-lg font-black mb-3 block">GENRE</Label>
+                  <Select
+                    value={filters.genre}
+                    onValueChange={(value) =>
+                      setFilters({ ...filters, genre: value })
                     }
                   >
-                    <X className="w-6 h-6 mr-2" />
-                    CLEAR FILTERS
-                  </Button>
+                    <SelectTrigger className="bg-white border-4 border-black text-black font-bold text-lg h-14 rounded-none">
+                      <SelectValue placeholder="ALL GENRES" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border-4 border-black rounded-none">
+                      <SelectItem value="all" className="font-bold">ALL GENRES</SelectItem>
+                      <SelectItem value="electronic" className="font-bold">ELECTRONIC</SelectItem>
+                      <SelectItem value="hip-hop" className="font-bold">HIP HOP</SelectItem>
+                      <SelectItem value="rock" className="font-bold">ROCK</SelectItem>
+                      <SelectItem value="pop" className="font-bold">POP</SelectItem>
+                      <SelectItem value="jazz" className="font-bold">JAZZ</SelectItem>
+                      <SelectItem value="classical" className="font-bold">CLASSICAL</SelectItem>
+                      <SelectItem value="ambient" className="font-bold">AMBIENT</SelectItem>
+                      <SelectItem value="synthwave" className="font-bold">SYNTHWAVE</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
-              </CardContent>
-            </Card>
+
+                <div>
+                  <Label className="text-lg font-black mb-3 block">MOOD</Label>
+                  <Select
+                    value={filters.mood}
+                    onValueChange={(value) =>
+                      setFilters({ ...filters, mood: value })
+                    }
+                  >
+                    <SelectTrigger className="bg-white border-4 border-black text-black font-bold text-lg h-14 rounded-none">
+                      <SelectValue placeholder="ALL MOODS" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border-4 border-black rounded-none">
+                      <SelectItem value="all" className="font-bold">ALL MOODS</SelectItem>
+                      <SelectItem value="energetic" className="font-bold">ENERGETIC</SelectItem>
+                      <SelectItem value="chill" className="font-bold">CHILL</SelectItem>
+                      <SelectItem value="dark" className="font-bold">DARK</SelectItem>
+                      <SelectItem value="uplifting" className="font-bold">UPLIFTING</SelectItem>
+                      <SelectItem value="melancholic" className="font-bold">MELANCHOLIC</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="md:col-span-2">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between p-4 border-4 border-black">
+                      <div>
+                        <p className="font-black">REMIX RIGHTS</p>
+                        <p className="text-sm text-gray-600">Show tracks that can be remixed</p>
+                      </div>
+                      <Switch
+                        checked={filters.allowRemixing}
+                        onCheckedChange={(checked) =>
+                          setFilters({ ...filters, allowRemixing: checked })
+                        }
+                        className="data-[state=checked]:bg-black"
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between p-4 border-4 border-black">
+                      <div>
+                        <p className="font-black">COMMERCIAL USE</p>
+                        <p className="text-sm text-gray-600">Show tracks for commercial use</p>
+                      </div>
+                      <Switch
+                        checked={filters.allowCommercial}
+                        onCheckedChange={(checked) =>
+                          setFilters({ ...filters, allowCommercial: checked })
+                        }
+                        className="data-[state=checked]:bg-black"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6">
+                <Button
+                  variant="outline"
+                  className="w-full border-4 border-black text-black hover:bg-black hover:text-white font-black text-lg py-3 rounded-none"
+                  onClick={() =>
+                    setFilters({
+                      genre: "",
+                      mood: "",
+                      allowRemixing: false,
+                      allowCommercial: false,
+                      search: "",
+                    })
+                  }
+                >
+                  CLEAR FILTERS
+                </Button>
+              </div>
+            </div>
           )}
         </div>
 
-        {/* Tracks Grid */}
-        <div className="grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-          {filteredTracks?.map((track) => (
-            <Link
-              key={track.id}
-              href={`/track/${track.id}`}
-              className="group"
-            >
-              <Card className="bg-white border-2 border-black rounded-none overflow-hidden hover:border-gray-400 transition-colors">
+        {/* Track Grid */}
+        {isLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="w-12 h-12 animate-spin" />
+          </div>
+        ) : filteredTracks.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-xl font-bold">No tracks found</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+            {filteredTracks.map((track) => (
+              <Card
+                key={track.id}
+                className="bg-white border-4 border-black rounded-none overflow-hidden hover:shadow-lg transition-shadow"
+              >
                 <div className="relative aspect-square">
                   <img
                     src={cidToUrl(track.image_ipfs_cid)}
                     alt={track.title}
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
                     <Button
-                      className="rounded-full w-16 h-16 bg-white text-black hover:bg-gray-200 border-2 border-black"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handlePlayPause(track.id);
-                      }}
+                      className="rounded-full w-16 h-16 md:w-20 md:h-20 bg-white text-black hover:bg-gray-200 border-4 border-black"
+                      onClick={() => handlePlayPause(track.id)}
                     >
                       {isPlaying === track.id ? (
-                        <Pause className="w-8 h-8" />
+                        <Pause className="w-8 h-8 md:w-10 md:h-10" />
                       ) : (
-                        <Play className="w-8 h-8 ml-1" />
+                        <Play className="w-8 h-8 md:w-10 md:h-10 ml-1" />
                       )}
                     </Button>
                   </div>
                 </div>
-                <CardContent className="p-3">
-                  <h3 className="text-lg font-black mb-1 line-clamp-1">
-                    {track.title}
-                  </h3>
-                  <p className="text-sm font-bold text-gray-600 mb-2 line-clamp-1">
-                    {track.account?.name}
-                  </p>
-                  <div className="flex flex-wrap gap-1 mb-2">
-                    <Badge className="bg-black text-white font-black px-2 py-1 text-xs rounded-none">
+
+                <CardContent className="p-4 md:p-6">
+                  <div className="mb-4">
+                    <h3 className="text-lg md:text-xl font-black mb-2 line-clamp-1">
+                      {track.title}
+                    </h3>
+                    <p className="text-base md:text-lg font-bold text-gray-600">
+                      {track.account?.name}
+                    </p>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    <Badge className="bg-black text-white font-black px-3 py-1 text-sm rounded-none">
                       {track.genre}
                     </Badge>
-                    {track.mood?.slice(0, 1).map((mood: string) => (
-                      <Badge
-                        key={mood}
-                        variant="outline"
-                        className="border border-black text-black font-bold px-2 py-1 text-xs rounded-none"
-                      >
-                        {mood}
-                      </Badge>
-                    ))}
+                    <Badge
+                      variant="outline"
+                      className="border-2 border-black text-black font-black px-3 py-1 text-sm rounded-none"
+                    >
+                      {track.mood?.[0]}
+                    </Badge>
+                    <Badge
+                      variant="outline"
+                      className="border-2 border-black text-black font-black px-3 py-1 text-sm rounded-none"
+                    >
+                      <Clock className="w-3 h-3 mr-1" />
+                      {formatDuration(track.duration)}
+                    </Badge>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1">
-                      <Clock className="w-3 h-3" />
-                      <span className="text-xs font-bold">
-                        {formatDuration(track.duration)}
-                      </span>
+
+                  <div className="flex justify-between items-center">
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        className={`border-2 border-black text-black hover:bg-black hover:text-white font-black text-sm px-3 py-1 rounded-none ${
+                          trackLikes[track.id]?.isLiked ? "bg-black text-white" : ""
+                        }`}
+                        onClick={() => handleAction(() => handleLike(track.id))}
+                      >
+                        <Heart
+                          className={`w-4 h-4 mr-1 ${
+                            trackLikes[track.id]?.isLiked ? "fill-current text-red-500" : ""
+                          }`}
+                        />
+                        {trackLikes[track.id]?.count || 0}
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="border-2 border-black text-black hover:bg-black hover:text-white font-black text-sm px-3 py-1 rounded-none"
+                        onClick={() => handleAction(() => handleShare(track))}
+                      >
+                        <Share2 className="w-4 h-4" />
+                      </Button>
                     </div>
-                    {renderActionButtons(track)}
+                    <Link href={`/track/${track.id}`}>
+                      <Button className="bg-black text-white hover:bg-gray-800 font-black text-sm px-4 py-1 rounded-none">
+                        LICENSE
+                      </Button>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>
-            </Link>
-          ))}
-        </div>
-
-        {/* Loading State */}
-        {!filteredTracks && (
-          <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-12 h-12 animate-spin" />
-          </div>
-        )}
-
-        {/* No Results */}
-        {filteredTracks?.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-2xl font-black mb-4">NO TRACKS FOUND</p>
-            <p className="text-lg font-bold text-gray-600">
-              Try adjusting your filters or search terms
-            </p>
+            ))}
           </div>
         )}
       </div>
 
-      {/* Add Wallet Warning Modal */}
-      <WalletWarning 
-        open={showWalletWarning} 
-        onOpenChange={setShowWalletWarning} 
+      <WalletWarning
+        open={showWalletWarning}
+        onOpenChange={setShowWalletWarning}
       />
     </div>
   );

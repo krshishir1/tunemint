@@ -264,79 +264,79 @@ export default function TrackDetailPage() {
         src={trackData ? cidToUrl(trackData.audio_ipfs_cid) : ''}
         onEnded={() => setIsPlaying(false)}
       />
-      <div className="max-w-7xl mx-auto px-6 py-12">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-12">
         {/* Back Navigation */}
-        <div className="mb-12">
+        <div className="mb-8 md:mb-12">
           <Link
             href="/discover"
-            className="text-black hover:text-gray-600 transition-colors font-black text-xl"
+            className="text-black hover:text-gray-600 transition-colors font-black text-lg md:text-xl"
           >
             ← BACK TO DISCOVER
           </Link>
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-12">
+        <div className="grid lg:grid-cols-12 gap-8 md:gap-12">
           {/* Main Content - Left Side */}
           <div className="lg:col-span-8">
             {/* Track Header */}
-            <div className="flex flex-col md:flex-row gap-8 mb-12">
+            <div className="flex flex-col md:flex-row gap-6 md:gap-8 mb-8 md:mb-12">
               <div className="relative w-full md:w-80 flex-shrink-0">
                 <img
                   src={cidToUrl(trackData.image_ipfs_cid)}
                   alt={trackData.title}
-                  className="w-full h-80 object-cover border-4 border-black"
+                  className="w-full h-64 md:h-80 object-cover border-4 border-black"
                 />
-                <div className="absolute inset-0 h-80 bg-black/60 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                <div className="absolute inset-0 h-64 md:h-80 bg-black/60 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
                   <Button
-                    className="rounded-full w-24 h-24 bg-white text-black hover:bg-gray-200 border-4 border-black"
+                    className="rounded-full w-16 h-16 md:w-24 md:h-24 bg-white text-black hover:bg-gray-200 border-4 border-black"
                     onClick={handlePlayPause}
                   >
                     {isPlaying ? (
-                      <Pause className="w-10 h-10" />
+                      <Pause className="w-8 h-8 md:w-10 md:h-10" />
                     ) : (
-                      <Play className="w-10 h-10 ml-1" />
+                      <Play className="w-8 h-8 md:w-10 md:h-10 ml-1" />
                     )}
                   </Button>
                 </div>
               </div>
 
               <div className="flex-1">
-                <div className="mb-8">
-                  <h1 className="text-5xl font-black mb-4 leading-tight">
+                <div className="mb-6 md:mb-8">
+                  <h1 className="text-3xl md:text-5xl font-black mb-3 md:mb-4 leading-tight">
                     {trackData.title}
                   </h1>
-                  <div className="flex items-center gap-6 mb-6">
+                  <div className="flex items-center gap-4 md:gap-6 mb-4 md:mb-6">
                     <div>
-                      <p className="text-2xl font-black">
+                      <p className="text-xl md:text-2xl font-black">
                         {trackData.account?.name}
                       </p>
-                      <p className="text-lg font-bold text-gray-600">
+                      <p className="text-base md:text-lg font-bold text-gray-600">
                         VERIFIED CREATOR
                       </p>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-4 mb-8">
-                  <Badge className="bg-black text-white font-black px-6 py-3 text-lg rounded-none">
+                <div className="flex flex-wrap gap-2 md:gap-4 mb-6 md:mb-8">
+                  <Badge className="bg-black text-white font-black px-4 md:px-6 py-2 md:py-3 text-sm md:text-lg rounded-none">
                     {trackData.genre}
                   </Badge>
                   <Badge
                     variant="outline"
-                    className="border-4 border-black text-black font-black px-6 py-3 text-lg rounded-none"
+                    className="border-4 border-black text-black font-black px-4 md:px-6 py-2 md:py-3 text-sm md:text-lg rounded-none"
                   >
                     {trackData.mood?.[0]}
                   </Badge>
                   <Badge
                     variant="outline"
-                    className="border-4 border-black text-black font-black px-6 py-3 text-lg rounded-none"
+                    className="border-4 border-black text-black font-black px-4 md:px-6 py-2 md:py-3 text-sm md:text-lg rounded-none"
                   >
-                    <Clock className="w-4 h-4 mr-2" />
+                    <Clock className="w-4 h-4 md:w-5 md:h-5 mr-2" />
                     {formatDuration(trackData.duration)}
                   </Badge>
                 </div>
 
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-3 md:gap-4">
                   {renderActionButton(
                     `LICENSE FOR ${trackData.pricing?.price} ETH`,
                     () => setShowLicenseModal(true)
@@ -358,7 +358,7 @@ export default function TrackDetailPage() {
                   <div className="flex gap-2">
                     <Button
                       variant="outline"
-                      className={`border-2 border-black text-black hover:bg-black hover:text-white font-black text-sm px-4 py-2 rounded-none ${
+                      className={`border-2 border-black text-black hover:bg-black hover:text-white font-black text-sm px-3 py-2 rounded-none ${
                         trackStore.isLiked ? "bg-black text-white" : ""
                       }`}
                       onClick={() => handleAction(handleLike)}
@@ -377,7 +377,7 @@ export default function TrackDetailPage() {
                     </Button>
                     <Button
                       variant="outline"
-                      className="border-2 border-black text-black hover:bg-black hover:text-white font-black text-sm px-4 py-2 rounded-none"
+                      className="border-2 border-black text-black hover:bg-black hover:text-white font-black text-sm px-3 py-2 rounded-none"
                       onClick={() => handleAction(handleShare)}
                     >
                       <Share2 className="w-4 h-4 mr-2" />
@@ -386,7 +386,7 @@ export default function TrackDetailPage() {
                     {trackData.rights?.allowTips && (
                       <Button
                         variant="outline"
-                        className="border-2 border-black text-black hover:bg-black hover:text-white font-black text-sm px-4 py-2 rounded-none"
+                        className="border-2 border-black text-black hover:bg-black hover:text-white font-black text-sm px-3 py-2 rounded-none"
                         onClick={() => handleAction(() => setShowTipModal(true))}
                       >
                         <Coins className="w-4 h-4 mr-2" />
@@ -405,14 +405,14 @@ export default function TrackDetailPage() {
             </div>
 
             {/* Audio Waveform */}
-            <Card className="bg-white border-4 border-black rounded-none mb-12">
-              <CardContent className="p-8">
-                <div className="bg-gray-100 border-4 border-black p-8 h-32 flex items-center justify-center">
-                  <div className="flex items-end space-x-1 h-20">
+            <Card className="bg-white border-4 border-black rounded-none mb-8 md:mb-12">
+              <CardContent className="p-4 md:p-8">
+                <div className="bg-gray-100 border-4 border-black p-4 md:p-8 h-24 md:h-32 flex items-center justify-center">
+                  <div className="flex items-end space-x-1 h-16 md:h-20">
                     {Array.from({ length: 100 }).map((_, i) => (
                       <div
                         key={i}
-                        className={`w-2 bg-black ${
+                        className={`w-1 md:w-2 bg-black ${
                           i < 30 ? "animate-pulse" : ""
                         }`}
                         style={{
@@ -427,22 +427,22 @@ export default function TrackDetailPage() {
             </Card>
 
             {/* Description */}
-            <Card className="bg-white border-4 border-black rounded-none mb-12">
+            <Card className="bg-white border-4 border-black rounded-none mb-8 md:mb-12">
               <CardHeader>
-                <CardTitle className="text-3xl font-black">
+                <CardTitle className="text-2xl md:text-3xl font-black">
                   ABOUT THIS TRACK
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-lg font-bold mb-8 leading-relaxed">
+                <p className="text-base md:text-lg font-bold mb-6 md:mb-8 leading-relaxed">
                   {trackData.description}
                 </p>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-2 md:gap-3">
                   {trackData.mood?.map((tag: string) => (
                     <Badge
                       key={tag}
                       variant="outline"
-                      className="border-2 border-black text-black font-bold px-4 py-2 rounded-none"
+                      className="border-2 border-black text-black font-bold px-3 md:px-4 py-1 md:py-2 text-sm md:text-base rounded-none"
                     >
                       #{tag}
                     </Badge>
@@ -454,18 +454,18 @@ export default function TrackDetailPage() {
             {/* Tables Section */}
             <Card className="bg-white border-4 border-black rounded-none">
               <CardHeader className="border-b-4 border-black">
-                <CardTitle className="text-3xl font-black">ACTIVITY</CardTitle>
+                <CardTitle className="text-2xl md:text-3xl font-black">ACTIVITY</CardTitle>
               </CardHeader>
               <CardContent className="p-0">
                 <Tabs defaultValue="licenses" className="w-full">
                   <TabsList className="w-full border-b-4 border-black rounded-none">
-                    <TabsTrigger value="licenses" className="flex-1 data-[state=active]:bg-black data-[state=active]:text-white rounded-none">
+                    <TabsTrigger value="licenses" className="flex-1 data-[state=active]:bg-black data-[state=active]:text-white rounded-none text-sm md:text-base">
                       LICENSES
                     </TabsTrigger>
-                    <TabsTrigger value="royalties" className="flex-1 data-[state=active]:bg-black data-[state=active]:text-white rounded-none">
+                    <TabsTrigger value="royalties" className="flex-1 data-[state=active]:bg-black data-[state=active]:text-white rounded-none text-sm md:text-base">
                       ROYALTIES
                     </TabsTrigger>
-                    <TabsTrigger value="tips" className="flex-1 data-[state=active]:bg-black data-[state=active]:text-white rounded-none">
+                    <TabsTrigger value="tips" className="flex-1 data-[state=active]:bg-black data-[state=active]:text-white rounded-none text-sm md:text-base">
                       TIPS
                     </TabsTrigger>
                   </TabsList>
@@ -600,33 +600,33 @@ export default function TrackDetailPage() {
           </div>
 
           {/* Sidebar - Right Side */}
-          <div className="lg:col-span-4 space-y-8">
+          <div className="lg:col-span-4 space-y-6 md:space-y-8">
             {/* License Info */}
             <Card className="bg-white border-4 border-black rounded-none">
               <CardHeader>
-                <CardTitle className="flex items-center text-2xl font-black">
-                  <Shield className="w-6 h-6 mr-3 text-black" />
+                <CardTitle className="flex items-center text-xl md:text-2xl font-black">
+                  <Shield className="w-5 h-5 md:w-6 md:h-6 mr-2 md:mr-3 text-black" />
                   LICENSE DETAILS
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-6">
+              <CardContent className="space-y-4 md:space-y-6">
                 <div className="flex justify-between">
-                  <span className="text-lg font-bold">PRICE</span>
-                  <span className="font-black text-xl">
+                  <span className="text-base md:text-lg font-bold">PRICE</span>
+                  <span className="font-black text-lg md:text-xl">
                     {trackData.pricing?.price} ETH
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-lg font-bold">ROYALTY</span>
-                  <span className="font-black text-xl">
+                  <span className="text-base md:text-lg font-bold">ROYALTY</span>
+                  <span className="font-black text-lg md:text-xl">
                     {trackData.pricing?.royalty}%
                   </span>
                 </div>
-                <div className="space-y-4">
+                <div className="space-y-3 md:space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-lg font-bold">COMMERCIAL USE</span>
+                    <span className="text-base md:text-lg font-bold">COMMERCIAL USE</span>
                     <Badge
-                      className={`font-black px-4 py-2 rounded-none ${
+                      className={`font-black px-3 md:px-4 py-1 md:py-2 rounded-none text-sm md:text-base ${
                         trackData.rights?.allowCommercial
                           ? "bg-green-600 text-white"
                           : "bg-red-600 text-white"
@@ -635,16 +635,10 @@ export default function TrackDetailPage() {
                       {trackData.rights?.allowCommercial ? "YES" : "NO"}
                     </Badge>
                   </div>
-                  {/* <div className="flex items-center justify-between">
-                    <span className="text-lg font-bold">ATTRIBUTION</span>
-                    <Badge className="font-black px-4 py-2 rounded-none bg-yellow-600 text-white">
-                      REQUIRED
-                    </Badge>
-                  </div> */}
                   <div className="flex items-center justify-between">
-                    <span className="text-lg font-bold">MODIFICATIONS</span>
+                    <span className="text-base md:text-lg font-bold">MODIFICATIONS</span>
                     <Badge
-                      className={`font-black px-4 py-2 rounded-none ${
+                      className={`font-black px-3 md:px-4 py-1 md:py-2 rounded-none text-sm md:text-base ${
                         trackData.rights?.allowRemixing
                           ? "bg-green-600 text-white"
                           : "bg-red-600 text-white"
