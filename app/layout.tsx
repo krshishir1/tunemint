@@ -3,6 +3,10 @@ import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 
+import Web3Provider from "@/components/Web3Provider";
+import AccountProvider from "@/components/AccountProvider";
+import { Navigation } from "@/components/Navigation";
+
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";
@@ -27,14 +31,19 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.className} antialiased`}>
-        <ThemeProvider
+        {/* <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
+        > */}
+          <Web3Provider>
+            <AccountProvider>
+              <Navigation />
+              {children}
+            </AccountProvider>
+          </Web3Provider>
+        {/* </ThemeProvider> */}
       </body>
     </html>
   );
