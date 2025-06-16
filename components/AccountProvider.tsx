@@ -36,6 +36,9 @@ export default function AccountProvider({ children }: AccountProviderIf) {
   }, [networkType, chain, config]);
 
   useEffect(() => {
+
+    console.log("Current wallet configs:", currWallet)
+
     if (currWallet?.account?.address) {
       console.log(currWallet)  
       console.log(
@@ -45,6 +48,8 @@ export default function AccountProvider({ children }: AccountProviderIf) {
       setupStoryClient()
       registerAccount()
     }
+
+    
   }, [currWallet, network]);
 
   return <>{children}</>;

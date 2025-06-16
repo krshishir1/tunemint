@@ -3,12 +3,56 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Music, Wallet, Menu, X } from "lucide-react";
-import { useState } from "react";
-import { ConnectButton, getDefaultWallets } from "@rainbow-me/rainbowkit";
+import { useState, useEffect } from "react";
 import { useAccountStore } from "@/store/userStore";
+import { useConnectModal, useAccountModal, useChainModal } from '@tomo-inc/tomo-evm-kit';
+
+import { useAccount, useWalletClient } from "wagmi";
+
+const ConnectBtn = () => {
+  const { openConnectModal } = useConnectModal();
+  const { openAccountModal } = useAccountModal();
+  const { openChainModal } = useChainModal();
+  const { data: wallet } = useWalletClient();
+
+  const isConnected = !!wallet?.account?.address;
+
+  return (
+    <div>
+      {!isConnected ? (
+        <Button
+          onClick={openConnectModal}
+          className="bg-black text-white hover:bg-gray-800 font-black text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-none"
+        >
+          <Wallet className="w-5 h-5 mr-3" />
+          CONNECT
+        </Button>
+      ) : (
+        <div className="flex items-center gap-3 md:gap-4">
+          <Button
+            onClick={openChainModal}
+            className="bg-black text-white hover:bg-gray-800 font-black text-base md:text-lg px-4 md:px-6 py-3 md:py-4 rounded-none"
+          >
+            {wallet.chain?.name || 'CHANGE NETWORK'}
+          </Button>
+
+          <Button
+            onClick={openAccountModal}
+            className="bg-black text-white hover:bg-gray-800 font-black text-base md:text-lg px-4 md:px-6 py-3 md:py-4 rounded-none"
+          >
+            <div className="flex items-center">
+              <div className="w-2 h-2 md:w-3 md:h-3 bg-green-500 rounded-full mr-2 md:mr-3"></div>
+              {wallet.account.address.slice(0, 6)}...{wallet.account.address.slice(-4)}
+            </div>
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+};
 
 export function Navigation() {
-  const { wallet } = useAccountStore();
+  const { data: wallet } = useWalletClient();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
@@ -51,58 +95,7 @@ export function Navigation() {
           {/* Mobile Menu Button */}
           <div className="flex items-center gap-4">
             <div className="md:hidden">
-              <ConnectButton.Custom>
-                {({
-                  account,
-                  chain,
-                  openAccountModal,
-                  openChainModal,
-                  openConnectModal,
-                  mounted,
-                }) => {
-                  const ready = mounted;
-                  const connected = ready && account && chain;
-
-                  return (
-                    <div
-                      {...(!ready && {
-                        'aria-hidden': true,
-                        'style': {
-                          opacity: 0,
-                          pointerEvents: 'none',
-                          userSelect: 'none',
-                        },
-                      })}
-                    >
-                      {(() => {
-                        if (!connected) {
-                          return (
-                            <Button
-                              onClick={openConnectModal}
-                              className="bg-black text-white hover:bg-gray-800 font-black text-sm px-4 py-2 rounded-none"
-                            >
-                              <Wallet className="w-4 h-4 mr-2" />
-                              CONNECT
-                            </Button>
-                          );
-                        }
-
-                        return (
-                          <Button
-                            onClick={openAccountModal}
-                            className="bg-black text-white hover:bg-gray-800 font-black text-sm px-4 py-2 rounded-none"
-                          >
-                            <div className="flex items-center">
-                              <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                              {account.displayName}
-                            </div>
-                          </Button>
-                        );
-                      })()}
-                    </div>
-                  );
-                }}
-              </ConnectButton.Custom>
+              <ConnectBtn />
             </div>
 
             <Button
@@ -120,89 +113,7 @@ export function Navigation() {
 
           {/* Desktop Connect Button */}
           <div className="hidden md:block">
-            <ConnectButton.Custom>
-              {({
-                account,
-                chain,
-                openAccountModal,
-                openChainModal,
-                openConnectModal,
-                mounted,
-              }) => {
-                const ready = mounted;
-                const connected = ready && account && chain;
-
-                return (
-                  <div
-                    {...(!ready && {
-                      'aria-hidden': true,
-                      'style': {
-                        opacity: 0,
-                        pointerEvents: 'none',
-                        userSelect: 'none',
-                      },
-                    })}
-                  >
-                    {(() => {
-                      if (!connected) {
-                        return (
-                          <Button
-                            onClick={openConnectModal}
-                            className="bg-black text-white hover:bg-gray-800 font-black text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-none"
-                          >
-                            <Wallet className="w-5 h-5 mr-3" />
-                            CONNECT
-                          </Button>
-                        );
-                      }
-
-                      if (chain.unsupported) {
-                        return (
-                          <Button
-                            onClick={openChainModal}
-                            className="bg-red-600 text-white hover:bg-red-700 font-black text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-none"
-                          >
-                            WRONG NETWORK
-                          </Button>
-                        );
-                      }
-
-                      return (
-                        <div className="flex items-center gap-3 md:gap-4">
-                          <Button
-                            onClick={openChainModal}
-                            className="bg-black text-white hover:bg-gray-800 font-black text-base md:text-lg px-4 md:px-6 py-3 md:py-4 rounded-none"
-                          >
-                            {chain.hasIcon && (
-                              <div className="mr-2">
-                                {chain.iconUrl && (
-                                  <img
-                                    alt={chain.name ?? 'Chain icon'}
-                                    src={chain.iconUrl}
-                                    className="w-4 h-4 md:w-5 md:h-5"
-                                  />
-                                )}
-                              </div>
-                            )}
-                            {chain.name}
-                          </Button>
-
-                          <Button
-                            onClick={openAccountModal}
-                            className="bg-black text-white hover:bg-gray-800 font-black text-base md:text-lg px-4 md:px-6 py-3 md:py-4 rounded-none"
-                          >
-                            <div className="flex items-center">
-                              <div className="w-2 h-2 md:w-3 md:h-3 bg-green-500 rounded-full mr-2 md:mr-3"></div>
-                              {account.displayName}
-                            </div>
-                          </Button>
-                        </div>
-                      );
-                    })()}
-                  </div>
-                );
-              }}
-            </ConnectButton.Custom>
+            <ConnectBtn />
           </div>
         </div>
 
